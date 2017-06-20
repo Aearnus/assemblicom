@@ -78,6 +78,8 @@ def thereAreMoreDirectives(_asm_files, regex)
 	return false
 end
 while thereAreMoreDirectives(asm_files, directive_regex)
+	#TODO: DIRECTIVE LOOP NOT EVEN RUNNING
+	puts "DIRECTIVE PASS"
 	needToRecurse = false
 	asm_files.each_pair do |file_name, asm_lines|
 		asm_lines.each_with_index do |asm_line, line_index|
