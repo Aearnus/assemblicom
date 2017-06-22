@@ -70,7 +70,6 @@ directive_regex = /^\.(\S+)\s+(.+)$/
 def thereAreMoreDirectives(_asm_files, regex)
 	_asm_files.each_pair do |_, asm_lines|
 		asm_lines.each do |asm_line|
-			puts "checking line #{asm_line}"
 			if asm_line =~ regex
 				return true
 			end
@@ -78,6 +77,7 @@ def thereAreMoreDirectives(_asm_files, regex)
 	end
 	return false
 end
+defintions = {}
 while thereAreMoreDirectives(asm_files, directive_regex)
 	needToRecurse = false
 	asm_files.each_pair do |file_name, asm_lines|
@@ -89,9 +89,12 @@ while thereAreMoreDirectives(asm_files, directive_regex)
 			directive = directive_match.first
 			case directive.shift
 			when "define"
-				#replace every definition in the file
+				definition = directive.first.split(" ")
+				keyWord = definition.first
+				valueWords = definition[1..-1].join(" ")
 				asm_lines.each_with_index do |_asm_line, _line_index|
-					asm_files[file_name][_line_index].sub!(directive.first, directive[1..-1].join(" "))
+					puts "Checking for definition #{keyWord} -> #{valueWords} on line #{_asm_line}"
+					asm_files[file_name][_line_index].sub!(keyWord, valueWords)
 				end
 				asm_files[file_name].delete_at(line_index)
 				needToRecurse = true
@@ -121,5 +124,6 @@ p asm_files
 #================================================
 #------------------------------------------------
 # This does not write any console-specific
-# headers, use headericom.rb for that.
+# headers, use headericom.rb to add them
+# afterward.
 #------------------------------------------------
