@@ -7,10 +7,10 @@ options = {}
 options[:instruction] = "6502"
 options[:outfile] = "out.bin"
 OptionParser.new do |opts|
-	opts.banner = "Assemblicom: assemble 6502 and 65816 assembly files to machine code.\nUsage: assemblicom.rb [options] [file]"
+	opts.banner = "Assemblicom: assemble 65C02 and 65816 assembly files to machine code.\nUsage: assemblicom.rb [options] [file]"
 	opts.on("-i", "--instruction type", "Choose the instruction set to compile for (6502/famicom/nes or 65816/superfamicom/snes. default 6502)") do |instruction|
 		options[:instruction] = instruction
-		if !%w(6502 famicom nes 65816 superfamicom snes).include? instruction
+		if !%w(65C02 famicom nes 65816 superfamicom snes).include? instruction
 			puts "Unrecognized instruction set #{instruction}"
 			exit
 		end
