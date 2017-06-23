@@ -2,6 +2,7 @@
 # Parse command line options
 #================================================
 require "optparse"
+
 options = {}
 options[:instruction] = "6502"
 options[:outfile] = "out.bin"
@@ -118,6 +119,18 @@ while thereAreMoreDirectives(asm_files, directive_regex)
 	end
 end
 p asm_files
+
+#------------------------------------------------
+# Pass 2: Syntax validity check/markers
+#------------------------------------------------
+valid_syntax = {
+	label: /^\S+:&/,
+	#TODO
+}
+lines_to_assemble = []
+#only assemble the first assembly file, the rest are .import'ed
+asm_files.first.each do |asm_line|
+
 
 #================================================
 # Write the machine code to disk

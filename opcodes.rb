@@ -20,7 +20,7 @@ class Opcode
 	@@modes = {}
 	def initialize(modes)
 		modes.keys.each do |mode|
-			if !%i(imp ind acc imm zpage zpageX abs absX absY indX indY)
+			if !%i(imp ind acc imm zpage zpageX zpageY abs absX absY indX indY)
 				puts "Invalid addressing mode #{mode}"
 			end
 		end
