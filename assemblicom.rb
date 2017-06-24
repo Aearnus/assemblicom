@@ -123,9 +123,48 @@ p asm_files
 #------------------------------------------------
 # Pass 2: Syntax validity check/markers
 #------------------------------------------------
+# Addressing modes:
+#     imp: (implied)
+#          (stack addressing is included here, though it is officially seperate)
+#     acc: A (accumulator)
+#     imm: #NN (immediate)
+#     abs: $NNNN (absolute)
+#     rel: *+/-NNNN OR <label> (relative)
+#     bitrel: $NN,*+/-NN OR $NN,<label> (zero page,relative. only used in branch on bit (re)set)
+#     absX: $NNNN,X (absolute,X)
+#     absY: $NNNN,Y (absolute,Y)
+#     zpage: $NN (zero page)
+#            (stack zero page is included here)
+#     zpageX: $NN,X (zero page,X)
+#     zpageY: $NN,Y (zero page,Y)
+#     zpageind: ($NN) (zero page indirect)
+#     ind: ($NNNN) (indirect)
+#     indX: ($NN,X) (indirect,X)
+#     indY: ($NN),Y (indirect,Y)
+#------------------------------------------------
+def nhex(n)
+	return /[0-9A-F]{#{n}}/
+end
+mnem = /[A-Z]{3,4}/
 valid_syntax = {
-	label: /^\S+:&/,
-	#TODO
+	label: /^\S+:$/,
+	imp: /^#{mnem}$/,
+	acc: /^#{mnem}\s+A$/,
+	imm: /^#{mnem}\s+##{nhex(2)}$/,
+	abs: /^#{mnem}\s+\$#{nhex(4)}/,
+	relhex: /^#{mnem}\s+$/,
+	rellabel: /^#{mnem}\s+$/,
+	bitrelhex: /^#{mnem}\s+$/,
+	bitrellabel: /^#{mnem}\s+$/,
+	absX: /^#{mnem}\s+$/,
+	absY: /^#{mnem}\s+$/,
+	zpage: /^#{mnem}\s+$/,
+	zpageX: /^#{mnem}\s+$/,
+	zpageY: /^#{mnem}\s+$/,
+	zpageind: /^#{mnem}\s+$/,
+	ind: /^#{mnem}\s+$/,
+	indX: /^#{mnem}\s+$/,
+	indY: /^#{mnem}\s+$/
 }
 lines_to_assemble = []
 #only assemble the first assembly file, the rest are .import'ed

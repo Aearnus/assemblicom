@@ -1,6 +1,6 @@
 .include test1.asm
 .define hello world
+asdf:
 aaa
-aaaaaaa
-aaaaaaaa
+STX $(03)
 hello aaa
