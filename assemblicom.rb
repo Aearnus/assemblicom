@@ -4,7 +4,7 @@
 require "optparse"
 
 options = {}
-options[:instruction] = "6502"
+options[:instruction] = "65C02"
 options[:outfile] = "out.bin"
 OptionParser.new do |opts|
 	opts.banner = "Assemblicom: assemble 65C02 and 65816 assembly files to machine code.\nUsage: assemblicom.rb [options] [file]"
@@ -40,6 +40,14 @@ p options
 #================================================
 # Parse the assembly into machine code
 #================================================
+def assembleError(file, line, error)
+	puts "#{file} L#{line}: #{error}"
+end
+def assembleFail(passNo)
+	puts "Failed to assemble files in pass #{passNo}."
+	puts "No code was generated."
+	exit
+end
 #------------------------------------------------
 # Load the assembly file(s) into memory
 # Clean the whitespace, remove comments
@@ -55,14 +63,6 @@ options[:infile].each do |asm_file|
 	end
 end
 p asm_files
-def assembleError(file, line, error)
-	puts "#{file} L#{line}: #{error}"
-end
-def assembleFail(passNo)
-	puts "Failed to assemble files in pass #{passNo}."
-	puts "No code was generated."
-	exit
-end
 #------------------------------------------------
 # Pass 1: Assembler directives
 # The directives run in order from top -> bottom
@@ -151,25 +151,36 @@ valid_syntax = {
 	imp: /^#{mnem}$/,
 	acc: /^#{mnem}\s+A$/,
 	imm: /^#{mnem}\s+##{nhex(2)}$/,
-	abs: /^#{mnem}\s+\$#{nhex(4)}/,
-	relhex: /^#{mnem}\s+$/,
-	rellabel: /^#{mnem}\s+$/,
-	bitrelhex: /^#{mnem}\s+$/,
-	bitrellabel: /^#{mnem}\s+$/,
-	absX: /^#{mnem}\s+$/,
-	absY: /^#{mnem}\s+$/,
-	zpage: /^#{mnem}\s+$/,
-	zpageX: /^#{mnem}\s+$/,
-	zpageY: /^#{mnem}\s+$/,
-	zpageind: /^#{mnem}\s+$/,
-	ind: /^#{mnem}\s+$/,
-	indX: /^#{mnem}\s+$/,
-	indY: /^#{mnem}\s+$/
+	abs: /^#{mnem}\s+\$#{nhex(4)}$/,
+	relhex: /^#{mnem}\s+\*[+-]#{nhex(2)}$/,
+	rellabel: /^#{mnem}\s+\S+$/,
+	bitrelhex: /^#{mnem}\s+\$#{nhex(2)},\*[+-]#{nhex(2)}$/,
+	bitrellabel: /^#{mnem}\s+\$#{nhex(2)},\S+$/,
+	absX: /^#{mnem}\s+\$#{nhex(4)},X$/,
+	absY: /^#{mnem}\s+\$#{nhex(4)},Y$/,
+	zpage: /^#{mnem}\s+\$#{nhex(2)}$/,
+	zpageX: /^#{mnem}\s+\$#{nhex(2)},X$/,
+	zpageY: /^#{mnem}\s+\$#{nhex(2)},Y$/,
+	zpageind: /^#{mnem}\s+\(\$#{nhex(2)}\)$/,
+	ind: /^#{mnem}\s+\(\$#{nhex(4)}\)$/,
+	indX: /^#{mnem}\s+\(\$#{nhex(2)},X\)$/,
+	indY: /^#{mnem}\s+\(\$#{nhex(2)}\),Y$/
 }
+def getLineType(line, _valid_syntax)
+	_valid_syntax.each_pair do |mode, reg|
+		return mode if line =~ reg
+	end
+	return :invalid
+end
 lines_to_assemble = []
 #only assemble the first assembly file, the rest are .import'ed
-asm_files.first.each do |asm_line|
-
+asm_files.first.last.each_with_index do |asm_line, line_index|
+	line_type = getLineType(asm_line)
+	if line_type == :invalid
+		assembleError(asm_files.first.first, line_index, "Syntax error")
+	lines_to_assemble << {asm: asm_line, syntax: line_type}
+end
+p lines_to_assemble
 
 #================================================
 # Write the machine code to disk
