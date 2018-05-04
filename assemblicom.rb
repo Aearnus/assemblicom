@@ -10,7 +10,7 @@ OptionParser.new do |opts|
 	opts.banner = "Assemblicom: assemble 65C02 and 65816 assembly files to machine code.\nUsage: assemblicom.rb [options] [file]"
 	opts.on("-i", "--instruction type", "Choose the instruction set to compile for (6502/famicom/nes or 65816/superfamicom/snes. default 6502)") do |instruction|
 		options[:instruction] = instruction
-		if !%w(65C02 famicom nes 65816 superfamicom snes).include? instruction
+		if !%w(6502 famicom nes 65816 superfamicom snes).include? instruction
 			puts "Unrecognized instruction set #{instruction}"
 			exit
 		end
@@ -175,12 +175,15 @@ end
 lines_to_assemble = []
 #only assemble the first assembly file, the rest are .import'ed
 asm_files.first.last.each_with_index do |asm_line, line_index|
+	puts "#{asm_index}: #{asm_line}"
 	line_type = getLineType(asm_line)
 	if line_type == :invalid
 		assembleError(asm_files.first.first, line_index, "Syntax error")
+	end
 	lines_to_assemble << {asm: asm_line, syntax: line_type}
 end
 p lines_to_assemble
+
 
 #================================================
 # Write the machine code to disk

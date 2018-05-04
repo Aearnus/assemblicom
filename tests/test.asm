@@ -1,4 +1,4 @@
-.include test1.asm
+.include tests/test1.asm
 .define hello world
 asdf:
 aaa

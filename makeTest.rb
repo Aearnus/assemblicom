@@ -1,2 +1,2 @@
 #TODO: proper tests
-`ruby assemblicom.rb -o test.bin -i 6502 test.asm test1.asm`
+puts `ruby assemblicom.rb -o test.bin -i 6502 tests/test.asm tests/test1.asm`
