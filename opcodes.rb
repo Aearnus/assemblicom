@@ -9,7 +9,7 @@
 #     acc: A (accumulator)
 #     imm: #NN (immediate)
 #     abs: $NNNN (absolute)
-#     rel: *+/-NNNN OR <label> (relative)
+#     rel: *+/-NN OR <label> (relative)
 #     bitrel: $NN,*+/-NN OR $NN,<label> (zero page,relative. only used in branch on bit (re)set)
 #     absX: $NNNN,X (absolute,X)
 #     absY: $NNNN,Y (absolute,Y)
