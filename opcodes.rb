@@ -37,7 +37,7 @@ class Opcode
 		@@modes = modes
 	end
 end
-65C02_OPCODES = {
+_65C02_OPCODES = {
 	ADC: Opcode.new({
 	    imm: 0x69,
 	    zpage: 0x65,
@@ -45,7 +45,7 @@ end
 	    abs: 0x6D,
 	    absX: 0x7D,
 	    absY: 0x79,
-		zpageind: 0x72
+		zpageind: 0x72,
 	    indX: 0x61,
 	    indY: 0x71
 	}),
@@ -125,7 +125,7 @@ end
 	    rel: 0xF0
 	}),
 	BIT: Opcode.new({
-		imm: 0x89
+		imm: 0x89,
 	    zpage: 0x24,
 		zpageX: 0x34,
 	    abs: 0x2C,
@@ -136,7 +136,7 @@ end
 	}),
 	BNE: Opcode.new({
 		rel: 0xD0,
-	})
+	}),
 	BPL: Opcode.new({
 	    rel: 0x10,
 	}),
@@ -246,24 +246,24 @@ end
 	    zpage: 0xA6,
 	    zpageY: 0xB6,
 	    abs: 0xAE,
-	    absY: 0xBE,
+	    absY: 0xBE
 	}),
 	LDY: Opcode.new({
 	    imm: 0xA0,
 	    zpage: 0xA4,
 	    zpageX: 0xB4,
 	    abs: 0xAC,
-	    absX: 0xBC,
+	    absX: 0xBC
 	}),
 	LSR: Opcode.new({
 	    acc: 0x4A,
 	    zpage: 0x46,
 	    zpageX: 0x56,
 	    abs: 0x4E,
-	    absX: 0x5E,
+	    absX: 0x5E
 	}),
 	NOP: Opcode.new({
-	    imp: 0xEA,
+	    imp: 0xEA
 	}),
 	ORA: Opcode.new({
 	    imm: 0x09,
@@ -274,75 +274,75 @@ end
 	    absY: 0x19,
 		zpageind: 0x12,
 	    indX: 0x01,
-	    indY: 0x11,
+	    indY: 0x11
 	}),
 	PHA: Opcode.new({
-	    imp: 0x48,
+	    imp: 0x48
 	}),
 	PHP: Opcode.new({
-	    imp: 0x08,
+	    imp: 0x08
 	}),
 	PHX: Opcode.new({
-		imp: 0xDA,
+		imp: 0xDA
 	}),
 	PHY: Opcode.new({
 		imp: 0x5A
 	}),
 	PLA: Opcode.new({
-	    imp: 0x68,
+	    imp: 0x68
 	}),
 	PLP: Opcode.new({
-	    imp: 0x28,
+	    imp: 0x28
 	}),
 	PLX: Opcode.new({
-		imp: 0xFA,
+		imp: 0xFA
 	}),
 	PLY: Opcode.new({
-		imp: 0x7A,
+		imp: 0x7A
 	}),
 	RMB0: Opcode.new({
-		zpage: 0x07,
+		zpage: 0x07
 	}),
 	RMB1: Opcode.new({
-		zpage: 0x17,
+		zpage: 0x17
 	}),
 	RMB2: Opcode.new({
-		zpage: 0x27,
+		zpage: 0x27
 	}),
 	RMB3: Opcode.new({
-		zpage: 0x37,
+		zpage: 0x37
 	}),
 	RMB4: Opcode.new({
-		zpage: 0x47,
+		zpage: 0x47
 	}),
 	RMB5: Opcode.new({
-		zpage: 0x57,
+		zpage: 0x57
 	}),
 	RMB6: Opcode.new({
-		zpage: 0x67,
+		zpage: 0x67
 	}),
 	RMB7: Opcode.new({
-		zpage: 0x77,
+		zpage: 0x77
 	}),
 	ROL: Opcode.new({
 	    acc: 0x2A,
 	    zpage: 0x26,
 	    zpageX: 0x36,
 	    abs: 0x2E,
-	    absX: 0x3E,
+	    absX: 0x3E
 	}),
 	ROR: Opcode.new({
 	    acc: 0x6A,
 	    zpage: 0x66,
 	    zpageX: 0x76,
 	    abs: 0x6E,
-	    absX: 0x7E,
+	    absX: 0x7E
 	}),
 	RTI: Opcode.new({
-	    imp: 0x40,
+	    imp: 0x40
 	}),
 	RTS: Opcode.new({
-	    imp: 0x60,
+	    imp: 0x60
 	}),
 	SBC: Opcode.new({
 	    imm: 0xE9,
@@ -353,16 +353,16 @@ end
 	    absY: 0xF9,
 		zpageind: 0xF2,
 	    indX: 0xE1,
-	    indY: 0xF1,
+	    indY: 0xF1
 	}),
 	SEC: Opcode.new({
-	    imp: 0x38,
+	    imp: 0x38
 	}),
 	SED: Opcode.new({
-	    imp: 0xF8,
+	    imp: 0xF8
 	}),
 	SEI: Opcode.new({
-	    imp: 0x78,
+	    imp: 0x78
 	}),
 	SMB0: Opcode.new({
 		zpage: 0x87
@@ -396,52 +396,52 @@ end
 	    absY: 0x99,
 		zpageind: 0x92,
 	    indX: 0x81,
-	    indY: 0x91,
+	    indY: 0x91
 	}),
 	STP: Opcode.new({
-		imp: 0xDB,
+		imp: 0xDB
 	}),
 	STX: Opcode.new({
 	    zpage: 0x86,
 	    zpageY: 0x96,
-	    abs: 0x8E,
+	    abs: 0x8E
 	}),
 	STY: Opcode.new({
 	    zpage: 0x84,
 	    zpageX: 0x94,
-	    abs: 0x8C,
+	    abs: 0x8C
 	}),
 	STZ: Opcode.new({
 		zpage: 0x64,
 		zpageX: 0x74,
 		abs: 0x9C,
 		absX: 0x9E
-	})
+	}),
 	TAX: Opcode.new({
-	    imp: 0xAA,
+	    imp: 0xAA
 	}),
 	TAY: Opcode.new({
-	    imp: 0xA8,
+	    imp: 0xA8
 	}),
 	TRB: Opcode.new({
 		zpage: 0x14,
 		abs: 0x1C,
-	})
+	}),
 	TSB: Opcode.new({
 		zpage: 0x04,
 		abs: 0x0C
-	})
+	}),
 	TSX: Opcode.new({
-	    imp: 0xBA,
+	    imp: 0xBA
 	}),
 	TXA: Opcode.new({
-	    imp: 0x8A,
+	    imp: 0x8A
 	}),
 	TXS: Opcode.new({
-	    imp: 0x9A,
+	    imp: 0x9A
 	}),
 	TYA: Opcode.new({
-	    imp: 0x98,
+	    imp: 0x98
 	}),
 	WAI: Opcode.new({
 		imp: 0xCB
