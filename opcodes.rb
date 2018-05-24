@@ -27,17 +27,22 @@
 # TODO: check against http://www.obelisk.me.uk/65C02/reference.html
 #------------------------------------------------
 class Opcode
-	@@modes = {}
+	@modes = {}
+
+	def get_modes()
+		@modes
+	end
+
 	def initialize(modes)
 		modes.keys.each do |mode|
 			if !%i(imp acc imm abs rel bitrel absX absY zpage zpageX zpageY zpageind ind indX indY)
 				puts "Invalid addressing mode #{mode}"
 			end
 		end
-		@@modes = modes
+		@modes = modes
 	end
 end
-_65C02_OPCODES = {
+@_65C02_OPCODES = {
 	ADC: Opcode.new({
 	    imm: 0x69,
 	    zpage: 0x65,
@@ -447,3 +452,57 @@ _65C02_OPCODES = {
 		imp: 0xCB
 	})
 }
+
+def noByte(name, mode, op)
+	puts "#{name} (#{mode}) = genericNoByteOp #{op}"
+end
+def oneByte(name, mode, op)
+	puts "#{name} (#{mode} b) = genericOp #{op} b"
+end
+def twoByte(name, mode, op)
+	puts "#{name} (#{mode} b) = genericTwoByteOp #{op} b"
+end
+if __FILE__ == $0
+	# Format as Haskell functions
+	@_65C02_OPCODES.each do |k,v|
+		name = k.to_s.downcase
+		puts "#{name} :: AddressingMode -> Instruction"
+		v.get_modes.each do |mode,op|
+			case mode
+				when :imp
+					noByte(name, "Implied", op)
+				when :acc
+					noByte(name, "Accumulator", op)
+				when :imm
+					oneByte(name, "Immediate", op)
+				when :abs
+					twoByte(name, "Absolute", op)
+				when :rel
+					oneByte(name, "Relative", op)
+				when :bitrel
+					oneByte(name, "ZeroPageRelative", op)
+				when :absX
+					twoByte(name, "AbsoluteX", op)
+				when :absY
+					twoByte(name, "AbsoluteY", op)
+				when :zpage
+					oneByte(name, "ZeroPage", op)
+				when :zpageX
+					oneByte(name, "ZeroPageX", op)
+				when :zpageY
+					oneByte(name, "ZeroPageY", op)
+				when :zpageind
+					oneByte(name, "ZeroPageIndirect", op)
+				when :ind
+					twoByte(name, "Indirect", op)
+				when :indX
+					oneByte(name, "IndirectX", op)
+				when :indY
+					oneByte(name, "IndirectY", op)
+				else
+					raise "Unrecognized #{mode}"
+			end
+		end
+		puts
+	end
+end
