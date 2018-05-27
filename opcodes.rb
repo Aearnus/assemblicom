@@ -454,19 +454,20 @@ end
 }
 
 def noByte(name, mode, op)
-	puts "#{name} (#{mode}) = genericNoByteOp #{op}"
+	puts "	#{mode} -> genericNoByteOp #{op}"
 end
 def oneByte(name, mode, op)
-	puts "#{name} (#{mode} b) = genericOp #{op} b"
+	puts "	(#{mode} b) -> genericOp #{op} b"
 end
 def twoByte(name, mode, op)
-	puts "#{name} (#{mode} b) = genericTwoByteOp #{op} b"
+	puts "	(#{mode} b) -> genericTwoByteOp #{op} b"
 end
 if __FILE__ == $0
 	# Format as Haskell functions
 	@_65C02_OPCODES.each do |k,v|
 		name = k.to_s.downcase
-		puts "#{name} :: AddressingMode -> Instruction"
+		puts "#{name} :: (AddressingMode a) => a -> Instruction"
+		puts "#{name} mode = case mode of"
 		v.get_modes.each do |mode,op|
 			case mode
 				when :imp
