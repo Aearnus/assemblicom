@@ -466,7 +466,45 @@ if __FILE__ == $0
 	# Format as Haskell functions
 	@_65C02_OPCODES.each do |k,v|
 		name = k.to_s.downcase
-		puts "#{name} :: AddressingMode -> Instruction"
+		# First, get the supported kinds of each functions
+		supportedKinds = []
+		v.get_modes.each do |mode,op|
+			case mode
+				when :imp
+					supportedKinds << "Implied"
+				when :acc
+					supportedKinds << "Accumulator"
+				when :imm
+				 	supportedKinds << "Immediate"
+				when :abs
+				 	supportedKinds << "Absolute"
+				when :rel
+				 	supportedKinds << "Relative"
+				when :bitrel
+				 	supportedKinds << "ZeroPageRelative"
+				when :absX
+				 	supportedKinds << "AbsoluteX"
+				when :absY
+				 	supportedKinds << "AbsoluteY"
+				when :zpage
+				 	supportedKinds << "ZeroPage"
+				when :zpageX
+				 	supportedKinds << "ZeroPageX"
+				when :zpageY
+				 	supportedKinds << "ZeroPageY"
+				when :zpageind
+				 	supportedKinds << "ZeroPageIndirect"
+				when :ind
+				 	supportedKinds << "Indirect"
+				when :indX
+				 	supportedKinds << "IndirectX"
+				when :indY
+				 	supportedKinds << "IndirectY"
+				else
+					raise "Unrecognized #{mode}"
+			end
+		end
+		puts "#{name} :: IsElem a '[#{supportedKinds.map{|k| k + "Kind" }.join(", ")}] ~ 'True\n    => AddressingMode a -> Instruction"
 		v.get_modes.each do |mode,op|
 			case mode
 				when :imp
